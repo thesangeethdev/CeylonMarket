@@ -17,30 +17,6 @@ import viewmodel.HomeViewModel
 @Composable
 @Preview
 fun App() {
-//    MaterialTheme {
-//        var showContent by remember { mutableStateOf(false) }
-//        Column(
-//            modifier = Modifier
-//                .background(MaterialTheme.colorScheme.primaryContainer)
-//                .safeContentPadding()
-//                .fillMaxSize(),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//        ) {
-//            Button(onClick = { showContent = !showContent }) {
-//                Text("Click me!")
-//            }
-//            AnimatedVisibility(showContent) {
-//                val greeting = remember { Greeting().greet() }
-//                Column(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                ) {
-//                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-//                    Text("Compose: $greeting")
-//                }
-//            }
-//        }
-//    }
     PreComposeApp {
         CeylonMarketTheme {
             val navigator = rememberNavigator()
@@ -60,7 +36,11 @@ fun App() {
                 }
                 scene("/detail/{date}") { backStackEntry ->
                     val date = backStackEntry.path<String>("date") ?: ""
+                    println("🔴 Navigation: date from backStackEntry.path = '$date'")
+                    println("🔴 Navigation: full arguments = ${backStackEntry}")
+
                     val detailViewModel = viewModel(DetailViewModel::class)
+                    detailViewModel.setDate(date)
                     DetailScreen(
                         viewModel = detailViewModel,
                         onBack = { navigator.goBack() }
