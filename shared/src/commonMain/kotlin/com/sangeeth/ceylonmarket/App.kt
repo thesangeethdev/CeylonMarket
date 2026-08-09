@@ -1,13 +1,12 @@
 package com.sangeeth.ceylonmarket
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
+import moe.tlaster.precompose.viewmodel.viewModel
 import ui.theme.CeylonMarketTheme
 import ui.theme.screens.DetailScreen
 import ui.theme.screens.HomeScreen
@@ -15,7 +14,6 @@ import viewmodel.DetailViewModel
 import viewmodel.HomeViewModel
 
 @Composable
-@Preview
 fun App() {
     PreComposeApp {
         CeylonMarketTheme {
@@ -26,7 +24,7 @@ fun App() {
                 initialRoute = "/home"
             ) {
                 scene("/home") {
-                    val viewModel = viewModel(modelClass = HomeViewModel::class)
+                    val viewModel = viewModel(modelClass = HomeViewModel::class) { HomeViewModel() }
                     HomeScreen(
                         viewModel = viewModel,
                         onReportClick = { date ->
@@ -39,7 +37,7 @@ fun App() {
                     println("🔴 Navigation: date from backStackEntry.path = '$date'")
                     println("🔴 Navigation: full arguments = ${backStackEntry}")
 
-                    val detailViewModel = viewModel(DetailViewModel::class)
+                    val detailViewModel = viewModel(DetailViewModel::class){ DetailViewModel() }
                     detailViewModel.setDate(date)
                     DetailScreen(
                         viewModel = detailViewModel,

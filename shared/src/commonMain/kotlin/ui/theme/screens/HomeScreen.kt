@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -44,6 +45,7 @@ import ui.theme.TealPrimary
 import viewmodel.HomeUiState
 import viewmodel.HomeViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
@@ -141,12 +143,14 @@ private fun LatestReportCard(latest: PriceReport, onClick: () -> Unit) {
             Text(
                 "Latest Report",
                 fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
                 color = Surface.copy(alpha = 0.8f)
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 "Tap to view details ->",
                 fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
                 color = AmberSecondary
             )
         }

@@ -2,7 +2,7 @@ package ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val TealPrimary = Color(0xFF0D9488)
+val TealPrimary = Color(0xFF347d39)
 val TealDark = Color(0xFF0F766E)
 val AmberSecondary = Color(0xFFF59E0B)
 val Background = Color(0xFFFAFAFA)

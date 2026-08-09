@@ -52,13 +52,15 @@
 
 package viewmodel
 
-import androidx.lifecycle.ViewModel
+
 import androidx.lifecycle.viewModelScope
 import data.model.PriceReport
 import data.model.api.ApiClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.viewmodel.ViewModel
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class DetailViewModel : ViewModel() {
     private val api = ApiClient()
