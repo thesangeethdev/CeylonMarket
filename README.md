@@ -1,31 +1,92 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Ceylon Market
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Building by - Sangeeth Amirthanathan
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+**Ceylon Market** A Kotlin Multiplatform mobile application that delivers daily vegetable, rice, fish, and other commodity prices from Sri Lankan markets. Built with Compose Multiplatform for both Android and iOS from a single shared codebase.
 
-### Running the apps
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+Time spent: TBA
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+## 📱 Platforms
 
-### Running tests
-
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
-
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
+| Android | iOS |
+|---------|-----|
+| ✅ Supported | ✅ Supported |
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────-┐
+│                        Shared Module                         │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐   │
+│  │   UI Layer  │  │ ViewModels  │  │    Data Layer       │   │
+│  │  (Compose)  │  │ (PreCompose)│  │  API (Ktor Client)  │   │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘   │
+│         │                │                    │              │
+│         ▼                ▼                    ▼              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │              Kotlin Multiplatform (commonMain)         │  │
+│  └────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────-┘
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+        ┌─────────┐                    ┌──────────┐
+        │ Android │                    │ IOS      │
+        │ (JVM)   │                    │ (Native) │
+        └─────────┘                    └──────────┘
+```
+
+## Functionalities
+
+**Completed** functionalities:
+
+* [x] customized composable screens
+* [x] loading components and screens
+* [x] MVVM architecture lifecycle
+* [x] Navigations using navigation3
+* [x] fetch json api data
+
+
+## Google Play Screenshots
+
+Screen | Google Play |
+--- |-------------|
+Images | TBA         |
+
+## Image Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+| Screen    | Home Screen - Andorid                                  | Detail View - Android                                          | Home Screen - IOS                                 | Detail View - IOS                                            |
+|---|--------------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------|--------------------------------------------------------------|
+| Images    | <img src="/images/home_android.png" width="150" alt="Sign In"> | <img src="/images/detail_android.png" width="150" alt="home"> | <img src="/images/home_ios.png" width="150" alt="fab"> | <img src="/images/detail_ios.png" width="150" alt="orders"> |
+
+# Screenshots Tablet
+Screen | Landscape |
+--- |-----------|
+Images | TBA       |
+
+## Workflow Diagram
+
+TBA
+
+## License
+
+    Copyright 2026 Sangeeth Amirthanathan, Ceylon Market
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
