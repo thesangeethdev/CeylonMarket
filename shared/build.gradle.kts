@@ -46,6 +46,7 @@ kotlin {
             implementation(libs.compose.uiTooling)
             // Ktor Android engine - REQUIRED
             implementation("io.ktor:ktor-client-android:2.3.12")
+            implementation("androidx.core:core-splashscreen:1.2.0")
 
         }
         iosMain.dependencies {
