@@ -55,7 +55,7 @@ Time spent: TBA
 
 Screen | Google Play |
 --- |-------------|
-Images | TBA         |
+Images | <img src="/images/google_play.png" alt="tab">         |
 
 ## Image Walkthrough
 
