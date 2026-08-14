@@ -4,6 +4,7 @@ Building by - Sangeeth Amirthanathan
 
 **Ceylon Market** A Kotlin Multiplatform mobile application that delivers daily vegetable, rice, fish, and other commodity prices from Sri Lankan markets. Built with Compose Multiplatform for both Android and iOS from a single shared codebase.
 
+[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=com.sangeeth.ceylonmarket)
 
 Time spent: TBA
 
