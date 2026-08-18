@@ -24,12 +24,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -80,6 +85,7 @@ fun DetailScreen(
                     (uiState as DetailUiState.Error).message,
                     onRetry = { viewModel.loadReport() }
                 )
+
                 is DetailUiState.Success -> {
                     val report = (uiState as DetailUiState.Success).report
                     ReportContent(report)
@@ -91,54 +97,131 @@ fun DetailScreen(
 
 @Composable
 private fun ReportContent(report: PriceReport) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+
+    val tabItems = listOf(
+        TabItem("Vegetables", report.data.vegetables),
+        TabItem("Rice", report.data.rice),
+        TabItem("Fish", report.data.fish),
+        TabItem("Others", report.data.other),
+    ).filter { !it.items.isNullOrEmpty() }
+
+    var selectedTabIndex by remember { mutableStateOf(0) }
+
+    if (tabItems.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("No Price Data Available", color = OnSurfaceVariant)
+        }
+        return
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
         // Summary
         report.data.summary?.let { summary ->
-            item {
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = TealPrimary.copy(alpha = 0.08f)
-                    )
-                ) {
-                    Text(
-                        summary,
-                        modifier = Modifier.padding(16.dp),
-                        color = OnSurface,
-                        fontSize = 14.sp
-                    )
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = TealPrimary.copy(alpha = 0.08f)
+                )
+            ) {
+                Text(
+                    summary,
+                    modifier = Modifier.padding(16.dp),
+                    color = OnSurface,
+                    fontSize = 14.sp
+                )
+            }
+        }
+        TabRow(
+            selectedTabIndex = selectedTabIndex,
+            containerColor = Surface,
+            contentColor = TealPrimary
+        ){
+            tabItems.forEachIndexed { index, tabItem ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = {selectedTabIndex = index},
+                    text = {
+                        Text(
+                            tabItem.title,
+                            fontWeight = if (selectedTabIndex == index) FontWeight.Bold else FontWeight.Normal
+                        )
+                    },
+                    selectedContentColor = TealPrimary,
+                    unselectedContentColor = OnSurfaceVariant
+                )
+            }
+        }
+        when(selectedTabIndex){
+            in tabItems.indices ->{
+                val items = tabItems[selectedTabIndex].items ?: emptyList()
+                if (items.isNotEmpty()){
+                    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)){
+                        items(items){PriceRow(it)}
+                    }
+                }else{
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        Text("Np items in this category", color = OnSurfaceVariant)
+                    }
                 }
             }
         }
-
-        // Vegetables
-        report.data.vegetables?.let { items ->
-            item { SectionHeader("Vegetables") }
-            items(items) { PriceRow(it) }
-        }
-
-        // Rice
-        report.data.rice?.let { items ->
-            item { SectionHeader("Rice") }
-            items(items) { PriceRow(it) }
-        }
-
-        // Fish
-        report.data.fish?.let { items ->
-            item { SectionHeader("Fish") }
-            items(items) { PriceRow(it) }
-        }
-
-        // Other
-        report.data.other?.let { items ->
-            item { SectionHeader("Other") }
-            items(items) { PriceRow(it) }
-        }
     }
+
+//    LazyColumn(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp),
+//        verticalArrangement = Arrangement.spacedBy(16.dp)
+//    ) {
+//        // Summary
+//        report.data.summary?.let { summary ->
+//            item {
+//                Card(
+//                    colors = CardDefaults.cardColors(
+//                        containerColor = TealPrimary.copy(alpha = 0.08f)
+//                    )
+//                ) {
+//                    Text(
+//                        summary,
+//                        modifier = Modifier.padding(16.dp),
+//                        color = OnSurface,
+//                        fontSize = 14.sp
+//                    )
+//                }
+//            }
+//        }
+//
+//        // Vegetables
+//        report.data.vegetables?.let { items ->
+//            item { SectionHeader("Vegetables") }
+//            items(items) { PriceRow(it) }
+//        }
+//
+//        // Rice
+//        report.data.rice?.let { items ->
+//            item { SectionHeader("Rice") }
+//            items(items) { PriceRow(it) }
+//        }
+//
+//        // Fish
+//        report.data.fish?.let { items ->
+//            item { SectionHeader("Fish") }
+//            items(items) { PriceRow(it) }
+//        }
+//
+//        // Other
+//        report.data.other?.let { items ->
+//            item { SectionHeader("Other") }
+//            items(items) { PriceRow(it) }
+//        }
+//    }
 }
 
 @Composable
@@ -224,11 +307,19 @@ private fun ErrorScreen(message: String, onRetry: () -> Unit) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(message, color = OnSurfaceVariant)
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onRetry, colors = ButtonDefaults.buttonColors(containerColor = TealPrimary)) {
+        Button(
+            onClick = onRetry,
+            colors = ButtonDefaults.buttonColors(containerColor = TealPrimary)
+        ) {
             Text("Retry")
         }
     }
 }
+
+private data class TabItem(
+    val title: String,
+    val items: List<PriceItem>?
+)
 
 private fun formatDate(dateStr: String): String {
     return try {
